@@ -6,7 +6,7 @@ class PongGame {
         this.gameIsOver = false;
         this.gameLoopFrecuency = 1000 / 60;
         this.gameIntervalId = null;
-        this.possibleKeys = ["ArrowLeft", "ArrowRight", "a", "d", " "];
+        this.possibleKeys = ["ArrowLeft", "ArrowRight", "a", "d", " ", "r"];
         this.keyInputs = {};
         this.board = null;
         this.ball = null;
@@ -49,35 +49,39 @@ class PongGame {
     }
 
     gameLoop() {
-        this.update();
-        if (this.gameIsOver) {
-            clearInterval(this.gameIntervalId);
-        }
-    }
-
-    update() {
         this.possibleKeys.forEach((key) => {
             switch (key) {
                 case "ArrowLeft":
                 case "a":
-                    if (this.keyInputs[key]) {
+                    if (this.keyInputs[key] && !this.gameIsOver) {
                         this.board.dirX = -1;
                     }
                     break;
                 case "ArrowRight":
                 case "d":
-                    if (this.keyInputs[key]) {
+                    if (this.keyInputs[key] && !this.gameIsOver) {
                         this.board.dirX = 1;
                     }
                     break;
                 case " ":
-                    if (this.keyInputs[key]) {
+                    if (this.keyInputs[key] && !this.gameIsOver) {
                         //console.log(this.ball.x + "/" + this.ball.y);
                     }
                     break;
+                case "r":
+                    if (this.keyInputs[key]) {
+                        location.reload();
+                    }
             }
         });
 
+        this.update();
+        if (this.gameIsOver) {
+            //clearInterval(this.gameIntervalId);
+        }
+    }
+
+    update() {
         this.board.move(this);
         this.ball.move(this);
 
@@ -93,12 +97,12 @@ class PongGame {
     }
 
     checkCollisionWith(entity) {
-        const collidingX = this.ball.x < entity.x + entity.width && 
-                           this.ball.x + this.ball.width > entity.x;
-    
-        const collidingY = this.ball.y < entity.y + entity.height && 
-                           this.ball.y + this.ball.height > entity.y;
-    
+        const collidingX = this.ball.x < entity.x + entity.width &&
+            this.ball.x + this.ball.width > entity.x;
+
+        const collidingY = this.ball.y < entity.y + entity.height &&
+            this.ball.y + this.ball.height > entity.y;
+
         if (collidingX && collidingY) {
             const overlapX = Math.min(
                 (this.ball.x + this.ball.width) - entity.x,
@@ -108,13 +112,13 @@ class PongGame {
                 (this.ball.y + this.ball.height) - entity.y,
                 (entity.y + entity.height) - this.ball.y
             );
-    
+
             if (overlapX < overlapY) {
                 this.ball.dirX *= -1;
             } else {
                 this.ball.dirY *= -1;
             }
-    
+
             entity.hit(this);
         }
     }
@@ -141,10 +145,6 @@ class PongGame {
     }
 
     handleKey(e, state) {
-        if (this.gameIsOver) {
-            return;
-        }
-
         if (this.possibleKeys.includes(e.key)) {
             e.preventDefault();
             this.keyInputs[e.key] = state;

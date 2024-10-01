@@ -3,6 +3,10 @@ window.addEventListener("load", (event) => onPageLoaded());
 
 function onPageLoaded() {
     console.log("page loaded");
+    startGame();
+}
+
+function startGame() {
     const gameScreen = document.getElementById("game-screen");
     const game = new PongGame(800, 600);
     window.addEventListener("keydown", (e) => game.handleKey(e, true));
