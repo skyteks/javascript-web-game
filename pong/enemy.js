@@ -12,7 +12,7 @@ class Enemy {
         this.element.style.left = this.x + "px";
         this.element.style.top = this.y + "px";
         this.element.style.backgroundColor = color;
-        this.element.style.borderRadius = 5 + "%";
+        this.element.style.borderRadius = 2 + "px";
     }
 
     hit(game) {

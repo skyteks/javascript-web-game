@@ -14,6 +14,7 @@ class Board {
         this.element.style.left = this.x + "px";
         this.element.style.top = this.y + "px";
         this.element.style.backgroundColor = color;
+        this.element.style.borderRadius = 2 + "px";
     }
 
     move(game) {
