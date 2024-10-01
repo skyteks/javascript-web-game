@@ -27,8 +27,8 @@ class Ball {
     move(game) {
         this.x += this.dirX * this.speed;
         this.y += this.dirY * this.speed;
-        this.x = clamp(this.x, 1, game.gameScreen.offsetWidth - this.width - 1);
-        this.y = clamp(this.y, 1, game.gameScreen.offsetHeight - this.height - 1);
+        //this.x = clamp(this.x, 0, game.gameScreen.offsetWidth - this.width);
+        //this.y = clamp(this.y, 0, game.gameScreen.offsetHeight - this.height);
         this.updatePosition();
     }
 

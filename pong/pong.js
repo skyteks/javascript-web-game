@@ -6,7 +6,7 @@ class PongGame {
         this.gameIsOver = false;
         this.gameLoopFrecuency = 1000 / 60;
         this.gameIntervalId = null;
-        this.possibleKeys = ["ArrowLeft", "ArrowRight", "a", "d",];
+        this.possibleKeys = ["ArrowLeft", "ArrowRight", "a", "d", " "];
         this.keyInputs = {};
         this.board = null;
         this.ball = null;
@@ -23,25 +23,28 @@ class PongGame {
         this.gameScreen.style.display = "block";
         this.gameIntervalId = setInterval(this.gameLoop.bind(this), this.gameLoopFrecuency);
 
-        this.board = new Board(this, "white", 5);
-        this.ball = new Ball(this, "white", 3);
+        this.board = new Board(this, "white", 7);
+        this.ball = new Ball(this, "white", 6);
         this.addEnemies();
 
         this.ball.startRandom();
     }
 
     addEnemies() {
-        const size = 45;
-        const space = 10;
-        let count = (this.width - space) / (size + space);
-        const rest = (this.width - space) % (size + space);
-        count = Math.floor(count);
-        console.log("count: " + count);
-        for (let i = 0; i < count; i++) {
-            const x = Math.floor(space + (rest * 0.5) + i * (size + space));
-            const y = 100;
-            const enemy = new Enemy(this.gameScreen, "white", x, y, size, size);
-            this.enemies.push(enemy);
+        const sizeX = 45;
+        const sizeY = 20;
+        const spaceX = 10;
+        const spaceY = spaceX;
+        const countX = Math.floor((this.width - spaceX) / (sizeX + spaceX));
+        const countY = 5;
+        const rest = (this.width - spaceX) % (sizeX + spaceX);
+        for (let j = 0; j < countY; j++) {
+            for (let i = 0; i < countX; i++) {
+                const x = Math.floor(spaceX + (rest * 0.5) + i * (sizeX + spaceX));
+                const y = Math.floor(spaceY + j * (sizeY + spaceY));
+                const enemy = new Enemy(this, "white", x, y, sizeX, sizeY);
+                this.enemies.push(enemy);
+            }
         }
     }
 
@@ -67,11 +70,74 @@ class PongGame {
                         this.board.dirX = 1;
                     }
                     break;
+                case " ":
+                    if (this.keyInputs[key]) {
+                        //console.log(this.ball.x + "/" + this.ball.y);
+                    }
+                    break;
             }
         });
 
         this.board.move(this);
         this.ball.move(this);
+
+        this.checkCollisionsWorld();
+        this.checkCollisionsEntities();
+    }
+
+    checkCollisionsEntities() {
+        this.checkCollisionWith(this.board);
+        for (let i = this.enemies.length - 1; i >= 0; i--) {
+            this.checkCollisionWith(this.enemies[i]);
+        }
+    }
+
+    checkCollisionWith(entity) {
+        const collidingX = this.ball.x < entity.x + entity.width && 
+                           this.ball.x + this.ball.width > entity.x;
+    
+        const collidingY = this.ball.y < entity.y + entity.height && 
+                           this.ball.y + this.ball.height > entity.y;
+    
+        if (collidingX && collidingY) {
+            const overlapX = Math.min(
+                (this.ball.x + this.ball.width) - entity.x,
+                (entity.x + entity.width) - this.ball.x
+            );
+            const overlapY = Math.min(
+                (this.ball.y + this.ball.height) - entity.y,
+                (entity.y + entity.height) - this.ball.y
+            );
+    
+            if (overlapX < overlapY) {
+                this.ball.dirX *= -1;
+            } else {
+                this.ball.dirY *= -1;
+            }
+    
+            entity.hit(this);
+        }
+    }
+
+    checkCollisionsWorld() {
+        if (this.ball.x < 0) {
+            this.ball.dirX *= -1;
+            this.ball.x *= -1;
+        }
+        else if (this.ball.x + this.ball.width > this.width) {
+            this.ball.dirX *= -1;
+            const max = this.width - this.ball.width;
+            this.ball.x -= this.ball.x - max;
+        }
+        if (this.ball.y < 0) {
+            this.ball.dirY *= -1;
+            this.ball.y *= -1;
+        }
+        else if (this.ball.y + this.ball.height > this.height) {
+            this.ball.dirX = 0;
+            this.ball.dirY = 0;
+            this.gameIsOver = true;
+        }
     }
 
     handleKey(e, state) {
@@ -81,7 +147,6 @@ class PongGame {
 
         if (this.possibleKeys.includes(e.key)) {
             e.preventDefault();
-
             this.keyInputs[e.key] = state;
         }
     }

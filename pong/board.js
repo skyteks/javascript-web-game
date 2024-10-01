@@ -26,4 +26,7 @@ class Board {
     updatePosition() {
         this.element.style.left = this.x + "px";
     }
+
+    hit() {
+    }
 }
