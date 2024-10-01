@@ -1,18 +1,6 @@
-class Enemy {
-    constructor(game, color, x, y, width, height) {
-        this.width = width;
-        this.height = height;
-        this.x = x;
-        this.y = y;
-        this.element = document.createElement("div");
-        game.gameScreen.appendChild(this.element);
-        this.element.style.position = "absolute";
-        this.element.style.width = this.width + "px";
-        this.element.style.height = this.height + "px";
-        this.element.style.left = this.x + "px";
-        this.element.style.top = this.y + "px";
-        this.element.style.backgroundColor = color;
-        this.element.style.borderRadius = 2 + "px";
+class Enemy extends GameObject{
+    constructor(position, size, color) {
+        super(position, size, color);
     }
 
     hit(game) {
