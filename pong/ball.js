@@ -11,7 +11,6 @@ class Ball extends GameObject {
         const cone = 45;
         const random = Math.random() * cone - cone * 0.5;
         angle -= random;
-        console.log(angle);
         this.velocity.x = Math.cos(angle * deg2rad);
         this.velocity.y = Math.sin(angle * deg2rad);
     }
@@ -20,6 +19,5 @@ class Ball extends GameObject {
         this.position.x += this.velocity.x * this.speed;
         this.position.y += this.velocity.y * this.speed;
         this.updatePosition();
-        console.log(Math.atan2(this.velocity.y, this.velocity.x) * rad2deg);
     }
 }

@@ -1,21 +1,24 @@
-class PongGame extends Game{
+class PongGame extends Game {
     constructor(width, height, debugStepping = false) {
-        super(width, height, ["ArrowLeft", "ArrowRight", "a", "d", " ", "r"], debugStepping);
+        super(width, height, ["ArrowLeft", "ArrowRight", "a", "d"], debugStepping);
         this.board = null;
         this.ball = null;
         this.enemies = [];
     }
 
     start() {
-        this.board = new Board(new Vector2(this.size.x * 0.5 - 100 * 0.5, this.size.y - 60), new Vector2(100, 20), "white", 7);
-        this.ball = new Ball(new Vector2(this.size.x * 0.5 - 15 * 0.5, this.size.y * 0.5 - 15 * 0.5), new Vector2(15, 15), "white", 6);
+        this.board = new Board(
+            new Vector2(this.size.x * 0.5 - 100 * 0.5, this.size.y - 60),
+            new Vector2(100, 20), "white", 7);
+        this.ball = new Ball(
+            new Vector2(this.size.x * 0.5 - 15 * 0.5, this.size.y * 0.5 - 15 * 0.5),
+            new Vector2(15, 15), "white", 6);
         this.addEnemies();
 
         this.ball.velocity = new Vector2(0, -1);
         this.ball.randomizeVelocityAngle();
 
-        this.gameIntervalId = setInterval(this.gameLoop.bind(this), this.gameLoopFrecuency);
-        this.gameScreen.style.display = "block";
+        super.start();
     }
 
     addEnemies() {
@@ -32,44 +35,6 @@ class PongGame extends Game{
                 const enemy = new Enemy(pos, curr, "white");
                 this.enemies.push(enemy);
             }
-        }
-    }
-
-    gameLoop() {
-        this.possibleKeys.forEach((key) => {
-            switch (key) {
-                case "ArrowLeft":
-                case "a":
-                    if (this.keyInputs[key] && !this.gameIsOver) {
-                        this.board.velocity.x = -1;
-                    }
-                    break;
-                case "ArrowRight":
-                case "d":
-                    if (this.keyInputs[key] && !this.gameIsOver) {
-                        this.board.velocity.x = 1;
-                    }
-                    break;
-                case " ":
-                    if (this.keyInputs[key] && !this.gameIsOver) {
-                    }
-                    break;
-                case "r":
-                    if (this.keyInputs[key]) {
-                        location.reload();
-                    }
-            }
-        });
-
-        if (!this.debugStepping ? true : this.keyInputs[" "]) {
-            this.update();
-            if (this.debugStepping) {
-                this.keyInputs[" "] = false;
-            }
-        }
-        
-        if (this.gameIsOver) {
-            //clearInterval(this.gameIntervalId);
         }
     }
 
@@ -139,5 +104,25 @@ class PongGame extends Game{
             this.ball.velocity.y = 0
             this.gameIsOver = true;
         }
+    }
+
+    readInputs() {
+        super.readInputs();
+        this.possibleKeys.forEach((key) => {
+            switch (key) {
+                case "ArrowLeft":
+                case "a":
+                    if (this.keyInputs[key] && !this.gameIsOver) {
+                        this.board.velocity.x = -1;
+                    }
+                    break;
+                case "ArrowRight":
+                case "d":
+                    if (this.keyInputs[key] && !this.gameIsOver) {
+                        this.board.velocity.x = 1;
+                    }
+                    break;
+            }
+        });
     }
 }

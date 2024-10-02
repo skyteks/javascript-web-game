@@ -1,3 +1,5 @@
+var game;
+
 //document.addEventListener("DOMContentLoaded", onPageLoaded);
 window.addEventListener("load", () => onPageLoaded());
 
@@ -6,11 +8,9 @@ function onPageLoaded() {
     startGame();
 }
 
-var game;
 function startGame() {
-    game = new PongGame(800, 600);
-    window.addEventListener("keydown", (e) => game.handleKey(e, true));
-    window.addEventListener("keyup", (e) => game.handleKey(e, false));
+    //game = new PongGame(800, 600);
+    game = new FlappyGame(800, 600);
     game.start();
 }
 
