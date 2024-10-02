@@ -1,4 +1,4 @@
-class Board extends GameObject{
+class Board extends GameObject {
     constructor(position, size, color, speed) {
         super(position, size, color);
         this.speed = speed;

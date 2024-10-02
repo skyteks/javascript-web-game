@@ -3,38 +3,42 @@ class Game {
         this.gameScreen = document.getElementById("game-screen");
         this.debugStepping = debugStepping;
         this.size = new Vector2(width, height);
-        this.gameIsOver = false;
+        this.gamePaused = true;
+        this.gameOver = false;
         this.gameLoopFrecuency = 1000 / 60;
         this.gameIntervalId = null;
-        this.possibleKeys = ["r", ...possibleKeys];
+        this.possibleKeys = ["tab", "r", " ", ...possibleKeys];
+        this.possibleKeys = this.possibleKeys.filter((v, i) => this.possibleKeys.indexOf(v) == i);
         this.keyInputs = {};
+
+        this.sounds = [];
 
         this.possibleKeys.forEach((key) => {
             this.keyInputs[key] = false;
         });
-    }
 
-    start() {
         window.addEventListener("keydown", (e) => game.handleKey(e, true));
         window.addEventListener("keyup", (e) => game.handleKey(e, false));
 
-        this.gameIntervalId = setInterval(() => this.gameLoop(), this.gameLoopFrecuency);
         this.gameScreen.style.display = "block";
+        this.gameIntervalId = setInterval(() => this.gameLoop(), this.gameLoopFrecuency);
     }
 
     gameLoop() {
         this.readInputs();
 
-        if (!this.debugStepping ? true : this.keyInputs[" "]) {
-            this.update();
-            if (this.debugStepping) {
-                this.keyInputs[" "] = false;
+        if (!this.gamePaused && !this.gameOver) {
+            if (!this.debugStepping ? true : this.keyInputs["tab"]) {
+                this.update();
+                if (this.debugStepping) {
+                    this.keyInputs["tab"] = false;
+                }
             }
         }
+    }
 
-        if (this.gameIsOver) {
-            //clearInterval(this.gameIntervalId);
-        }
+    stop() {
+        clearInterval(this.gameIntervalId);
     }
 
     update() {
@@ -45,8 +49,18 @@ class Game {
             switch (key) {
                 case "r":
                     if (this.keyInputs[key]) {
+                        this.keyInputs[key] = false;
                         location.reload();
                     }
+                    break;
+                case " ":
+                    if (this.keyInputs[key]) {
+                        this.keyInputs[key] = false;
+                        this.gamePaused = !this.gamePaused;
+                    }
+                    break;
+                default:
+                    break;
             }
         });
     }
@@ -57,5 +71,14 @@ class Game {
             e.preventDefault();
             this.keyInputs[e.key] = state;
         }
+    }
+
+    playSFX(fileName) {
+        //const audio = [...document.getElementsByTagName("audio")].filter((element) => element.src.includes(fileName));
+
+        fileName = "./" + this.__proto__.constructor.name.replace("Game", "").toLowerCase() + "/sfx/" + fileName;
+        const audio = new Audio(fileName);
+
+        audio.play();
     }
 }

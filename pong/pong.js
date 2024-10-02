@@ -1,12 +1,8 @@
 class PongGame extends Game {
     constructor(width, height, debugStepping = false) {
         super(width, height, ["ArrowLeft", "ArrowRight", "a", "d"], debugStepping);
-        this.board = null;
-        this.ball = null;
         this.enemies = [];
-    }
 
-    start() {
         this.board = new Board(
             new Vector2(this.size.x * 0.5 - 100 * 0.5, this.size.y - 60),
             new Vector2(100, 20), "white", 7);
@@ -17,8 +13,6 @@ class PongGame extends Game {
 
         this.ball.velocity = new Vector2(0, -1);
         this.ball.randomizeVelocityAngle();
-
-        super.start();
     }
 
     addEnemies() {
@@ -48,11 +42,17 @@ class PongGame extends Game {
 
     checkCollisionsEntities() {
         let hit = this.checkCollisionWith(this.board);
+        if (hit) {
+        }
         for (let i = this.enemies.length - 1; i >= 0; i--) {
-            hit = hit || this.checkCollisionWith(this.enemies[i]);
+            const hit2 = this.checkCollisionWith(this.enemies[i]);
+            if (hit2) {
+            }
+            hit = hit || hit2;
         }
         if (hit) {
             this.ball.randomizeVelocityAngle();
+            this.playSFX("pongblipf4_2.wav");
         }
     }
 
@@ -86,23 +86,32 @@ class PongGame extends Game {
     }
 
     checkCollisionsWorld() {
+        let hitWall = false;
         if (this.ball.position.x < 0) {
             this.ball.velocity.x *= -1;
             this.ball.position.x *= -1;
+            hitWall = true;
         }
         else if (this.ball.position.x + this.ball.size.x > this.size.x) {
             this.ball.velocity.x *= -1;
             const max = this.size.x - this.ball.size.x;
             this.ball.position.x -= this.ball.position.x - max;
+            hitWall = true;
         }
         if (this.ball.position.y < 0) {
             this.ball.velocity.y *= -1;
             this.ball.position.y *= -1;
+            hitWall = true;
         }
         else if (this.ball.position.y + this.ball.size.y > this.size.y) {
             this.ball.velocity.x = 0;
             this.ball.velocity.y = 0
-            this.gameIsOver = true;
+            this.gameOver = true;
+            this.playSFX("18787.mp3");
+        }
+
+        if (hitWall) {
+            this.playSFX("pongblipf5_2.wav");
         }
     }
 
@@ -112,15 +121,17 @@ class PongGame extends Game {
             switch (key) {
                 case "ArrowLeft":
                 case "a":
-                    if (this.keyInputs[key] && !this.gameIsOver) {
+                    if (this.keyInputs[key] && !this.gameOver) {
                         this.board.velocity.x = -1;
                     }
                     break;
                 case "ArrowRight":
                 case "d":
-                    if (this.keyInputs[key] && !this.gameIsOver) {
+                    if (this.keyInputs[key] && !this.gameOver) {
                         this.board.velocity.x = 1;
                     }
+                    break;
+                default:
                     break;
             }
         });

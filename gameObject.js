@@ -3,7 +3,8 @@ class GameObject {
         this.position = position;
         this.size = size;
         this.element = document.createElement("div");
-        game.gameScreen.appendChild(this.element);
+        const gameScreen = document.getElementById("game-screen");
+        gameScreen.appendChild(this.element);
         this.element.style.position = "absolute";
         this.element.style.left = this.position.x + "px";
         this.element.style.top = this.position.y + "px";

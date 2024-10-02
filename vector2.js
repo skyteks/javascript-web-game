@@ -68,7 +68,7 @@ class Vector2 {
         return this.dot(u, vn) * vn;
     }
 
-    static projectMagnitude(u, v){
+    static projectMagnitude(u, v) {
         return this.dot(u, v.normalized());
     }
 

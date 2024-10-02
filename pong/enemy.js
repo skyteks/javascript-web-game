@@ -1,4 +1,4 @@
-class Enemy extends GameObject{
+class Enemy extends GameObject {
     constructor(position, size, color) {
         super(position, size, color);
     }
@@ -14,7 +14,7 @@ class Enemy extends GameObject{
             game.enemies.splice(index, 1);
         }
         else {
-            console.log("ERROR: element has been removed already.");
+            throw new Error("ERROR: element has been removed already.");
         }
     }
 }
