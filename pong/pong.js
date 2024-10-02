@@ -1,31 +1,17 @@
-class PongGame {
+class PongGame extends Game{
     constructor(width, height, debugStepping = false) {
-        this.gameScreen = document.getElementById("game-screen");
-        this.debugStepping = debugStepping;
-        this.size = new Vector2(width, height);
-        this.gameIsOver = false;
-        this.gameLoopFrecuency = 1000 / 60;
-        this.gameIntervalId = null;
-        this.possibleKeys = ["ArrowLeft", "ArrowRight", "a", "d", " ", "r"];
-        this.keyInputs = {};
+        super(width, height, ["ArrowLeft", "ArrowRight", "a", "d", " ", "r"], debugStepping);
         this.board = null;
         this.ball = null;
         this.enemies = [];
     }
 
     start() {
-        console.log("start pong game");
-
-        this.possibleKeys.forEach((key) => {
-            this.keyInputs[key] = false;
-        });
-
         this.board = new Board(new Vector2(this.size.x * 0.5 - 100 * 0.5, this.size.y - 60), new Vector2(100, 20), "white", 7);
         this.ball = new Ball(new Vector2(this.size.x * 0.5 - 15 * 0.5, this.size.y * 0.5 - 15 * 0.5), new Vector2(15, 15), "white", 6);
         this.addEnemies();
 
-        //this.ball.velocity = new Vector2(0, 1);
-        this.ball.velocity = Vector2.normalized(new Vector2(1, -1));
+        this.ball.velocity = new Vector2(0, -1);
         this.ball.randomizeVelocityAngle();
 
         this.gameIntervalId = setInterval(this.gameLoop.bind(this), this.gameLoopFrecuency);
@@ -66,7 +52,6 @@ class PongGame {
                     break;
                 case " ":
                     if (this.keyInputs[key] && !this.gameIsOver) {
-                        //console.log(this.ball.position.x + "/" + this.ball.position.y);
                     }
                     break;
                 case "r":
@@ -153,14 +138,6 @@ class PongGame {
             this.ball.velocity.x = 0;
             this.ball.velocity.y = 0
             this.gameIsOver = true;
-        }
-    }
-
-    handleKey(e, state) {
-        //console.log("key " + e.key + " " + (state ? "down" : "up"));
-        if (this.possibleKeys.includes(e.key)) {
-            e.preventDefault();
-            this.keyInputs[e.key] = state;
         }
     }
 }
