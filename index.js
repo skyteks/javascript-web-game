@@ -9,9 +9,8 @@ function onPageLoaded() {
 }
 
 function startGame() {
-    //game = new PongGame(800, 600);
-    game = new FlappyGame(800, 600);
-    game.start();
+    game = new PongGame(800, 600);
+    //game = new FlappyGame(800, 600);
 }
 
 function clamp(number, min, max) {
