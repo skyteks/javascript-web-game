@@ -1,6 +1,7 @@
 class PongGame {
-    constructor(width, height) {
+    constructor(width, height, debugStepping = false) {
         this.gameScreen = document.getElementById("game-screen");
+        this.debugStepping = debugStepping;
         this.size = new Vector2(width, height);
         this.gameIsOver = false;
         this.gameLoopFrecuency = 1000 / 60;
@@ -23,7 +24,9 @@ class PongGame {
         this.ball = new Ball(new Vector2(this.size.x * 0.5 - 15 * 0.5, this.size.y * 0.5 - 15 * 0.5), new Vector2(15, 15), "white", 6);
         this.addEnemies();
 
-        this.ball.setRandomUpVelocity();
+        //this.ball.velocity = new Vector2(0, 1);
+        this.ball.velocity = Vector2.normalized(new Vector2(1, -1));
+        this.ball.randomizeVelocityAngle();
 
         this.gameIntervalId = setInterval(this.gameLoop.bind(this), this.gameLoopFrecuency);
         this.gameScreen.style.display = "block";
@@ -73,7 +76,13 @@ class PongGame {
             }
         });
 
-        this.update();
+        if (!this.debugStepping ? true : this.keyInputs[" "]) {
+            this.update();
+            if (this.debugStepping) {
+                this.keyInputs[" "] = false;
+            }
+        }
+        
         if (this.gameIsOver) {
             //clearInterval(this.gameIntervalId);
         }
@@ -88,9 +97,12 @@ class PongGame {
     }
 
     checkCollisionsEntities() {
-        this.checkCollisionWith(this.board);
+        let hit = this.checkCollisionWith(this.board);
         for (let i = this.enemies.length - 1; i >= 0; i--) {
-            this.checkCollisionWith(this.enemies[i]);
+            hit = hit || this.checkCollisionWith(this.enemies[i]);
+        }
+        if (hit) {
+            this.ball.randomizeVelocityAngle();
         }
     }
 
@@ -118,7 +130,9 @@ class PongGame {
             }
 
             entity.hit(this);
+            return true;
         }
+        return false;
     }
 
     checkCollisionsWorld() {
@@ -143,7 +157,7 @@ class PongGame {
     }
 
     handleKey(e, state) {
-        console.log("key " + e.key + " " + (state ? "down" : "up"));
+        //console.log("key " + e.key + " " + (state ? "down" : "up"));
         if (this.possibleKeys.includes(e.key)) {
             e.preventDefault();
             this.keyInputs[e.key] = state;
