@@ -1,6 +1,6 @@
 class Board extends GameObject {
     constructor(position, size, color, speed) {
-        super(position, size, color);
+        super(position, size, 0, color);
         this.speed = speed;
         this.velocity = new Vector2();
     }

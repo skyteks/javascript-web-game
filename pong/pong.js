@@ -1,6 +1,6 @@
 class PongGame extends Game {
-    constructor(width, height, debugStepping = false) {
-        super(width, height, ["ArrowLeft", "ArrowRight", "a", "d"], debugStepping);
+    constructor(size, debugStepping = false) {
+        super(size, ["ArrowLeft", "ArrowRight", "a", "d"], debugStepping);
         this.enemies = [];
 
         this.board = new Board(

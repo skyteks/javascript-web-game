@@ -1,6 +1,6 @@
 class Enemy extends GameObject {
     constructor(position, size, color) {
-        super(position, size, color);
+        super(position, size, 0, color);
     }
 
     hit(game) {
@@ -8,7 +8,7 @@ class Enemy extends GameObject {
     }
 
     destroy(game) {
-        this.element.remove();
+        super.destroy();
         var index = game.enemies.indexOf(this);
         if (index !== -1) {
             game.enemies.splice(index, 1);

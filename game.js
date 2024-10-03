@@ -1,8 +1,8 @@
 class Game {
-    constructor(width, height, possibleKeys, debugStepping = false) {
+    constructor(size, possibleKeys, debugStepping = false) {
         this.gameScreen = document.getElementById("game-screen");
         this.debugStepping = debugStepping;
-        this.size = new Vector2(width, height);
+        this.size = size;
         this.gamePaused = true;
         this.gameOver = false;
         this.gameLoopFrecuency = 1000 / 60;
@@ -10,6 +10,7 @@ class Game {
         this.possibleKeys = ["tab", "r", " ", ...possibleKeys];
         this.possibleKeys = this.possibleKeys.filter((v, i) => this.possibleKeys.indexOf(v) == i);
         this.keyInputs = {};
+        this.mainMenu = null;
 
         this.sounds = [];
 
@@ -17,11 +18,20 @@ class Game {
             this.keyInputs[key] = false;
         });
 
-        window.addEventListener("keydown", (e) => game.handleKey(e, true));
-        window.addEventListener("keyup", (e) => game.handleKey(e, false));
+        window.addEventListener("keydown", (e) => this.handleKey(e, true));
+        window.addEventListener("keyup", (e) => this.handleKey(e, false));
 
         this.gameScreen.style.display = "block";
         this.gameIntervalId = setInterval(() => this.gameLoop(), this.gameLoopFrecuency);
+
+        this.showStartMenu();
+    }
+
+    showStartMenu() {
+        const scalar = 0.1;
+        const offset = Vector2.scale(this.size, scalar);
+        const menuSize = Vector2.subtract(this.size, Vector2.scale(this.size, scalar * 2));
+        this.mainMenu = new Menu(offset, menuSize, 1, "rgba(156, 156, 156, .8)", "<h1>Main Menu</h1>");
     }
 
     gameLoop() {

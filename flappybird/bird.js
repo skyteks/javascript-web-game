@@ -1,6 +1,6 @@
 class Bird extends GameObject {
     constructor(position, size, color, speed) {
-        super(position, size, color);
+        super(position, size, 0, color);
         this.element.style.borderRadius = 50 + "%";
         this.speed = speed;
         this.velocity = new Vector2();

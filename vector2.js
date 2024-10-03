@@ -45,6 +45,10 @@ class Vector2 {
         return new Vector2(u.x - v.x, u.y - v.y);
     }
 
+    static scale(u, s) {
+        return new Vector2(u.x * s, u.y * s);
+    }
+
     static equals(u, v) {
         return u.x === v.x && u.y === v.y;
     }
@@ -61,6 +65,11 @@ class Vector2 {
     subtract(v) {
         this.x -= v.x;
         this.y -= v.y;
+    }
+
+    scale(s) {
+        this.x *= s;
+        this.y *= s;
     }
 
     static project(u, v) {

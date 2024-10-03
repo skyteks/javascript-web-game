@@ -9,8 +9,9 @@ function onPageLoaded() {
 }
 
 function startGame() {
-    game = new PongGame(800, 600);
-    //game = new FlappyGame(800, 600);
+    const size = new Vector2(800, 600);
+    game = new PongGame(size);
+    //game = new FlappyGame(size);
 }
 
 function clamp(number, min, max) {
@@ -18,3 +19,7 @@ function clamp(number, min, max) {
 }
 const deg2rad = (Math.PI / 180);
 const rad2deg = (180 / Math.PI);
+
+function deepCopy(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}

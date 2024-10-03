@@ -1,5 +1,5 @@
 class GameObject {
-    constructor(position, size, color) {
+    constructor(position, size, layer, color) {
         this.position = position;
         this.size = size;
         this.element = document.createElement("div");
@@ -12,6 +12,11 @@ class GameObject {
         this.element.style.height = this.size.y + "px";
         this.element.style.backgroundColor = color;
         this.element.style.borderRadius = 2 + "px";
+        this.element.style.zIndex = layer;
+    }
+
+    destroy() {
+        this.element.remove();
     }
 
     updatePosition() {
