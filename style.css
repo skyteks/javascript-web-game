@@ -21,3 +21,21 @@ body {
     position: relative;
     overflow: hidden;
 }
+
+#game-main-menu {
+    background-color: rgba(156, 156, 156, .9);
+    color: white;
+    text-shadow: #020819 8px -20px 9px;
+}
+
+h1 {
+    font-size: 6em;
+}
+
+h2 {
+    font-size: 4em;
+}
+
+h3 {
+    font-size: 2em;
+}

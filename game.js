@@ -31,7 +31,7 @@ class Game {
         const scalar = 0.1;
         const offset = Vector2.scale(this.size, scalar);
         const menuSize = Vector2.subtract(this.size, Vector2.scale(this.size, scalar * 2));
-        this.mainMenu = new Menu(offset, menuSize, 1, "rgba(156, 156, 156, .8)", "<h1>Main Menu</h1>");
+        this.mainMenu = new Menu(offset, menuSize, 1, "game-main-menu");
     }
 
     gameLoop() {
@@ -45,6 +45,8 @@ class Game {
                 }
             }
         }
+
+        this.mainMenu.toggleVisibility(!this.gamePaused);
     }
 
     stop() {
