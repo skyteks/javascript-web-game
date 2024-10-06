@@ -8,7 +8,7 @@ class PongGame extends Game {
             new Vector2(100, 20), "white", 7);
         this.ball = new Ball(
             new Vector2(this.size.x * 0.5 - 15 * 0.5, this.size.y - 75 - 15 * 0.5),
-            new Vector2(12, 12), "white", 8);
+            new Vector2(12, 12), "cyan", 8);
         this.addEnemies();
 
         this.ball.velocity = new Vector2(0, -1);
@@ -81,17 +81,20 @@ class PongGame extends Game {
             const overlapX = Math.min(
                 (this.ball.position.x + this.ball.size.x) - entity.position.x,
                 (entity.position.x + entity.size.x) - this.ball.position.x
-            );
+            ) * Math.sign(this.ball.position.x - entity.position.x);
             const overlapY = Math.min(
                 (this.ball.position.y + this.ball.size.y) - entity.position.y,
                 (entity.position.y + entity.size.y) - this.ball.position.y
-            );
+            ) * Math.sign(this.ball.position.y - entity.position.y);;
 
-            if (overlapX < overlapY) {
+            if (Math.abs(overlapX) < Math.abs(overlapY)) {
                 this.ball.velocity.x *= -1;
+                this.ball.position.x += overlapX;
             } else {
                 this.ball.velocity.y *= -1;
+                this.ball.position.y += overlapY;
             }
+            this.ball.updatePosition();
 
             if (entity.hit() && index != null) {
                 entity.destroy();
@@ -121,11 +124,19 @@ class PongGame extends Game {
             hitWall = true;
         }
         else if (this.ball.position.y + this.ball.size.y > this.size.y) {
-            this.ball.velocity.x = 0;
-            this.ball.velocity.y = 0
-            this.gameState = "defeat";
-            this.playSound("gameOver");
-            return;
+            if (false) {
+                this.ball.velocity.y *= -1;
+                const max = this.size.y - this.ball.size.y;
+                this.ball.position.y -= this.ball.position.y - max;
+                hitWall = true;
+            }
+            else {
+                this.ball.velocity.x = 0;
+                this.ball.velocity.y = 0
+                this.gameState = "defeat";
+                this.playSound("gameOver");
+                return;
+            }
         }
 
         if (hitWall) {

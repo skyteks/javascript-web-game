@@ -8,7 +8,7 @@ class Menu {
         this.element.style.top = this.position.y + "px";
         this.element.style.width = this.size.x + "px";
         this.element.style.height = this.size.y + "px";
-        this.element.style.zIndex = layer;
+        this.element.style.zIndex = layer + 100;
         this.toggleVisibility(visibility);
     }
 

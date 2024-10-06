@@ -6,7 +6,7 @@ window.addEventListener("load", () => onPageLoaded());
 
 function onPageLoaded() {
     console.log("page loaded");
-    startGame(1);
+    startGame(2);
 }
 
 function startGame(level) {

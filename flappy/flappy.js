@@ -103,7 +103,6 @@ class FlappyGame extends Game {
                     if (this.keyInputs[key] && this.gameState == "running") {
                         this.bird.velocity.y = -1.15;
                         this.keyInputs[key] = false;
-                        this.playSFX("pongblipd3.wav");
                         this.playSound("flap");
                     }
                     break;
