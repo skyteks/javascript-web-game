@@ -15,7 +15,7 @@ class FlappyGame extends Game {
         const space = this.size.x * 0.5;
         for (let i = 0; i < count; i++) {
             let pos = new Vector2(this.size.x * 0.9 + space * i, 0);
-            const rnd = Math.random() * (this.size.y - (gap + this.bird.size.y * 2));
+            const rnd = Math.random() * (this.size.y * 0.9 - (gap + this.size.y * 0.1));
             let size = new Vector2(50, rnd);
             const pillar1 = new Pillar(pos, size, "green");
             pos = Vector2.add(pos, new Vector2(0, rnd + gap));
@@ -83,7 +83,7 @@ class FlappyGame extends Game {
     checkCollisionsWorld() {
         if (this.bird.position.y < 0) {
             this.bird.velocity.y = 0;
-            this.bird.position.y *= -1;
+            this.bird.position.y = 0;
         }
         else if (this.bird.position.y + this.bird.size.y > this.size.y) {
             this.bird.velocity.y = 0;
@@ -101,7 +101,7 @@ class FlappyGame extends Game {
                 case "w":
                 case " ":
                     if (this.keyInputs[key] && this.gameState == "running") {
-                        this.bird.velocity.y = -1;
+                        this.bird.velocity.y = -1.15;
                         this.keyInputs[key] = false;
                         this.playSFX("pongblipd3.wav");
                         this.playSound("flap");

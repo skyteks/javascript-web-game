@@ -8,7 +8,7 @@ class PongGame extends Game {
             new Vector2(100, 20), "white", 7);
         this.ball = new Ball(
             new Vector2(this.size.x * 0.5 - 15 * 0.5, this.size.y - 75 - 15 * 0.5),
-            new Vector2(12, 12), "white", 6);
+            new Vector2(12, 12), "white", 8);
         this.addEnemies();
 
         this.ball.velocity = new Vector2(0, -1);
