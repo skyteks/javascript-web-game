@@ -1,6 +1,6 @@
 class PongGame extends Game {
-    constructor(size, endCallback) {
-        super(size, ["ArrowLeft", "ArrowRight", "a", "d"], endCallback);
+    constructor(size, level, endCallback) {
+        super(size, ["ArrowLeft", "ArrowRight", "a", "d"], level, endCallback);
         this.enemies = [];
 
         this.board = new Board(

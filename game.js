@@ -1,5 +1,5 @@
 class Game {
-    constructor(size, possibleKeys, endCallback) {
+    constructor(size, possibleKeys, level, endCallback) {
         this.endCallback = endCallback;
         this.gameScreen = document.getElementById("game-screen");
         this.size = size;
@@ -26,6 +26,9 @@ class Game {
         this.mainMenu = this.createMenu("game-main-menu", true);
         this.defeatMenu = this.createMenu("game-over-screen-menu", false);
         this.winMenu = this.createMenu("game-win-screen-menu", false);
+
+        (document.getElementsByClassName("game-name")[0]).textContent = this.__proto__.constructor.name.replace("Game", "");
+        (document.getElementsByClassName("level-number")[0]).textContent = "LEVEL " + level.toString().padStart(2, 0);
     }
 
     createMenu(id, visibility) {

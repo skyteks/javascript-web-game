@@ -6,16 +6,16 @@ window.addEventListener("load", () => onPageLoaded());
 
 function onPageLoaded() {
     console.log("page loaded");
-    startGame(1);
+    startGame(2);
 }
 
 function startGame(level) {
     switch (level) {
         case 1:
-            game = new PongGame(gameScreenSize, () => startGame(++level));
+            game = new PongGame(gameScreenSize, level, () => startGame(++level));
             break;
         case 2:
-            game = new FlappyGame(gameScreenSize, () => startGame(++level));
+            game = new FlappyGame(gameScreenSize, level, () => startGame(++level));
             break;
         default:
             throw new Error(`Level ${level} not yet implemented`);

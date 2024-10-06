@@ -8,9 +8,7 @@ class Bird extends GameObject {
     }
 
     move() {
-        if (!game.gameIsOver) {
-            this.velocity.y += this.gravity * game.gameLoopFrecuency;
-        }
+        this.velocity.y += this.gravity * game.gameLoopFrecuency;
         this.position.y += this.velocity.y * this.speed;
         this.updatePosition();
     }
