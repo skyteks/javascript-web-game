@@ -16,9 +16,6 @@
     <script type="text/javascript" src="./pong/enemy.js"></script>
     <script type="text/javascript" src="./pong/ball.js"></script>
     <script type="text/javascript" src="./pong/pong.js"></script>
-    <audio type="audio/wav" src="./pong/sfx/pongblipf4_2.wav" hidden></audio>
-    <audio type="audio/wav" src="./pong/sfx/pongblipf5_2.wav" hidden></audio>
-    <audio type="audio/mp3" src="./pong/sfx/18787.mp3" hidden></audio>
 
     <script type="text/javascript" src="./flappybird/bird.js"></script>
     <script type="text/javascript" src="./flappybird/flappy.js"></script>
@@ -29,15 +26,28 @@
 </head>
 
 <body>
+    <audio type="audio/wav" src="./pong/sfx/pongblipf4_2.wav" hidden></audio>
+    <audio type="audio/wav" src="./pong/sfx/pongblipf5_2.wav" hidden></audio>
+    <audio type="audio/mp3" src="./pong/sfx/18787.mp3" hidden></audio>
     <main>
         <!--
         <h1>My litte JavaScript Game</h1>
         -->
         <div id="game-screen">
-            <div id="game-main-menu">
+            <div id="game-main-menu" class="menu">
                 <h1>LEVEL 01</h1>
                 <h2>Pong</h2>
                 <h3>press SPACE to start</h3>
+            </div>
+            <div id="game-over-screen-menu" class="menu">
+                <h1>GAME OVER</h1>
+                <h2>you lost...</h2>
+                <h3>press R to restart</h3>
+            </div>
+            <div id="game-win-screen-menu" class="menu">
+                <h1>Level cleared</h1>
+                <h2></h2>
+                <h3>next game starts in a few seconds</h3>
             </div>
         </div>
     </main>

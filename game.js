@@ -1,13 +1,12 @@
 class Game {
-    constructor(size, possibleKeys, debugStepping = false) {
+    constructor(size, possibleKeys, endCallback) {
+        this.endCallback = endCallback;
         this.gameScreen = document.getElementById("game-screen");
-        this.debugStepping = debugStepping;
         this.size = size;
-        this.gamePaused = true;
-        this.gameOver = false;
+        this.gameState = "paused";
         this.gameLoopFrecuency = 1000 / 60;
         this.gameIntervalId = null;
-        this.possibleKeys = ["tab", "r", " ", ...possibleKeys];
+        this.possibleKeys = ["tab", "r", " ", "p", ...possibleKeys];
         this.possibleKeys = this.possibleKeys.filter((v, i) => this.possibleKeys.indexOf(v) == i);
         this.keyInputs = {};
         this.mainMenu = null;
@@ -24,36 +23,50 @@ class Game {
         this.gameScreen.style.display = "block";
         this.gameIntervalId = setInterval(() => this.gameLoop(), this.gameLoopFrecuency);
 
-        this.showStartMenu();
+        this.mainMenu = this.createMenu("game-main-menu", true);
+        this.defeatMenu = this.createMenu("game-over-screen-menu", false);
+        this.winMenu = this.createMenu("game-win-screen-menu", false);
     }
 
-    showStartMenu() {
+    createMenu(id, visibility) {
         const scalar = 0.1;
         const offset = Vector2.scale(this.size, scalar);
         const menuSize = Vector2.subtract(this.size, Vector2.scale(this.size, scalar * 2));
-        this.mainMenu = new Menu(offset, menuSize, 1, "game-main-menu");
+        return new Menu(offset, menuSize, 1, id, visibility);
     }
 
     gameLoop() {
         this.readInputs();
 
-        if (!this.gamePaused && !this.gameOver) {
-            if (!this.debugStepping ? true : this.keyInputs["tab"]) {
-                this.update();
-                if (this.debugStepping) {
-                    this.keyInputs["tab"] = false;
-                }
-            }
+        if (this.gameState == "running") {
+            this.update();
         }
+        else {
+            this.showMenu();
+        }
+    }
 
-        this.mainMenu.toggleVisibility(!this.gamePaused);
+    update() {
+    }
+
+    showMenu() {
+        switch (this.gameState) {
+            case "victory":
+                this.winMenu.toggleVisibility(true);
+                this.stop();
+                break;
+            case "defeat":
+                this.defeatMenu.toggleVisibility(true);
+                break;
+            case "paused":
+                this.mainMenu.toggleVisibility(true);
+                return;
+        }
     }
 
     stop() {
         clearInterval(this.gameIntervalId);
-    }
-
-    update() {
+        setTimeout(this.endCallback, 3000);
     }
 
     readInputs() {
@@ -66,9 +79,15 @@ class Game {
                     }
                     break;
                 case " ":
+                    if (this.keyInputs[key] && this.gameState == "paused") {
+                        this.keyInputs[key] = false;
+                        this.gameState = "running";
+                        this.mainMenu.toggleVisibility(false);
+                    }
+                case "p":
                     if (this.keyInputs[key]) {
                         this.keyInputs[key] = false;
-                        this.gamePaused = !this.gamePaused;
+                        this.gameState = "victory"
                     }
                     break;
                 default:

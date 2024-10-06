@@ -1,6 +1,6 @@
 class PongGame extends Game {
-    constructor(size, debugStepping = false) {
-        super(size, ["ArrowLeft", "ArrowRight", "a", "d"], debugStepping);
+    constructor(size, endCallback) {
+        super(size, ["ArrowLeft", "ArrowRight", "a", "d"], endCallback);
         this.enemies = [];
 
         this.board = new Board(
@@ -18,7 +18,7 @@ class PongGame extends Game {
     addEnemies() {
         const curr = new Vector2(45, 20);
         const space = new Vector2(10, 10);
-        const count = new Vector2(Math.floor((this.size.x - space.x) / (curr.x + space.x)), 5);
+        const count = new Vector2(Math.floor((this.size.x - space.x) / (curr.x + space.x)), 1);
         const rest = (this.size.x - space.x) % (curr.x + space.x);
         for (let j = 0; j < count.y; j++) {
             for (let i = 0; i < count.x; i++) {
@@ -38,6 +38,22 @@ class PongGame extends Game {
 
         this.checkCollisionsWorld();
         this.checkCollisionsEntities();
+
+        if (this.enemies.length == 0) {
+            this.gameState = "victory";
+        }
+    }
+
+    stop() {
+        this.board.destroy();
+        this.board = null;
+        this.ball.destroy();
+        this.ball = null;
+        this.enemies.forEach((enemy) => {
+            enemy.destroy();
+        });
+        this.enemies = [];
+        super.stop();
     }
 
     checkCollisionsEntities() {
@@ -45,7 +61,7 @@ class PongGame extends Game {
         if (hit) {
         }
         for (let i = this.enemies.length - 1; i >= 0; i--) {
-            const hit2 = this.checkCollisionWith(this.enemies[i]);
+            const hit2 = this.checkCollisionWith(this.enemies[i], i);
             if (hit2) {
             }
             hit = hit || hit2;
@@ -56,7 +72,7 @@ class PongGame extends Game {
         }
     }
 
-    checkCollisionWith(entity) {
+    checkCollisionWith(entity, index = null) {
         const collidingX = this.ball.position.x < entity.position.x + entity.size.x &&
             this.ball.position.x + this.ball.size.x > entity.position.x;
 
@@ -79,7 +95,9 @@ class PongGame extends Game {
                 this.ball.velocity.y *= -1;
             }
 
-            entity.hit(this);
+            if (entity.hit() && index != null) {
+                this.enemies.splice(index, 1);
+            }
             return true;
         }
         return false;
@@ -106,8 +124,9 @@ class PongGame extends Game {
         else if (this.ball.position.y + this.ball.size.y > this.size.y) {
             this.ball.velocity.x = 0;
             this.ball.velocity.y = 0
-            this.gameOver = true;
+            this.gameState = "defeat";
             this.playSFX("18787.mp3");
+            return;
         }
 
         if (hitWall) {

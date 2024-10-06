@@ -1,5 +1,5 @@
 class Menu {
-    constructor(position, size, layer, id) {
+    constructor(position, size, layer, id, visibility) {
         this.position = position;
         this.size = size;
         this.element = document.getElementById(id);
@@ -9,9 +9,10 @@ class Menu {
         this.element.style.width = this.size.x + "px";
         this.element.style.height = this.size.y + "px";
         this.element.style.zIndex = layer;
+        this.toggleVisibility(visibility);
     }
 
     toggleVisibility(state) {
-        this.element.hidden = state;
+        this.element.style.display = state ? "block" : "none";
     }
 }

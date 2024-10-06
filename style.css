@@ -22,7 +22,7 @@ body {
     overflow: hidden;
 }
 
-#game-main-menu {
+.menu {
     background-color: rgba(156, 156, 156, .9);
     color: white;
     text-shadow: #020819 8px -20px 9px;

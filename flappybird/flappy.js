@@ -1,6 +1,6 @@
 class FlappyGame extends Game {
-    constructor(size, debugStepping = false) {
-        super(size, ["ArrowUp", "w", " "], debugStepping);
+    constructor(size, endCallback) {
+        super(size, ["ArrowUp", "w", " "], endCallback);
         this.pillars = [];
 
         this.bird = new Bird(
