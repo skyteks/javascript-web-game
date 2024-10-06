@@ -18,7 +18,7 @@ class PongGame extends Game {
     addEnemies() {
         const curr = new Vector2(45, 20);
         const space = new Vector2(10, 10);
-        const count = new Vector2(Math.floor((this.size.x - space.x) / (curr.x + space.x)), 1);
+        const count = new Vector2(Math.floor((this.size.x - space.x) / (curr.x + space.x)), 4);
         const rest = (this.size.x - space.x) % (curr.x + space.x);
         for (let j = 0; j < count.y; j++) {
             for (let i = 0; i < count.x; i++) {

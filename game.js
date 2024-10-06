@@ -84,11 +84,6 @@ class Game {
                         this.gameState = "running";
                         this.mainMenu.toggleVisibility(false);
                     }
-                case "p":
-                    if (this.keyInputs[key]) {
-                        this.keyInputs[key] = false;
-                        this.gameState = "victory"
-                    }
                     break;
                 default:
                     break;
