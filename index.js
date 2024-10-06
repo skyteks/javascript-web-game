@@ -6,15 +6,15 @@ window.addEventListener("load", () => onPageLoaded());
 
 function onPageLoaded() {
     console.log("page loaded");
-    startGame(2);
+    startGame(1);
 }
 
 function startGame(level) {
     switch (level) {
-        case 1:
+        case 2:
             game = new PongGame(gameScreenSize, level, () => startGame(++level));
             break;
-        case 2:
+        case 1:
             game = new FlappyGame(gameScreenSize, level, () => startGame(++level));
             break;
         default:

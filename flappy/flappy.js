@@ -10,9 +10,10 @@ class FlappyGame extends Game {
     }
 
     addPillars() {
+        const count = 20;
         const gap = this.bird.size.y * 3;
         const space = this.size.x * 0.5;
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < count; i++) {
             let pos = new Vector2(this.size.x * 0.9 + space * i, 0);
             const rnd = Math.random() * (this.size.y - (gap + this.bird.size.y * 2));
             let size = new Vector2(50, rnd);
@@ -27,11 +28,22 @@ class FlappyGame extends Game {
 
     update() {
         this.bird.move();
-        this.pillars.forEach((pillar) => {
+
+        for (let i = this.pillars.length - 1; i >= 0; i--) {
+            const pillar = this.pillars[i];
             pillar.move(this.bird.speed);
-        });
+            if (pillar.position.x + pillar.size.x < 0) {
+                pillar.destroy();
+                this.pillars.splice(i, 1);
+            }
+        }
+
         this.checkCollisionsWorld();
         this.checkCollisionsEntities();
+
+        if (this.pillars.length == 0) {
+            this.gameState = "victory";
+        }
     }
 
     stop() {
@@ -49,7 +61,7 @@ class FlappyGame extends Game {
             let hit = this.checkCollisionWith(this.pillars[i], i);
             if (hit) {
                 this.gameState = "defeat";
-                this.playSFX("18787.mp3");
+                this.playSound("gameOver");
                 return;
             }
         }
@@ -76,7 +88,8 @@ class FlappyGame extends Game {
         else if (this.bird.position.y + this.bird.size.y > this.size.y) {
             this.bird.velocity.y = 0;
             this.gameState = "defeat";
-            this.playSFX("18787.mp3");
+            this.playSound("gameOver");
+            return;
         }
     }
 
@@ -87,12 +100,25 @@ class FlappyGame extends Game {
                 case "ArrowUp":
                 case "w":
                 case " ":
-                    if (this.keyInputs[key] && !this.gameOver) {
+                    if (this.keyInputs[key] && this.gameState == "running") {
                         this.bird.velocity.y = -1;
                         this.keyInputs[key] = false;
+                        this.playSFX("pongblipd3.wav");
+                        this.playSound("flap");
                     }
                     break;
             }
         });
+    }
+
+    playSound(key) {
+        switch (key) {
+            case "flap":
+                this.playSFX("pongblipd3.wav");
+                break;
+            case "gameOver":
+                this.playSFX("18787.mp3");
+                break;
+        }
     }
 }

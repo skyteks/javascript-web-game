@@ -3,7 +3,7 @@ class Enemy extends GameObject {
         super(position, size, 0, color);
     }
 
-    hit(game) {
-        this.destroy(game);
+    hit() {
+        return true;
     }
 }

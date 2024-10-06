@@ -7,26 +7,25 @@ class PongGame extends Game {
             new Vector2(this.size.x * 0.5 - 100 * 0.5, this.size.y - 60),
             new Vector2(100, 20), "white", 7);
         this.ball = new Ball(
-            new Vector2(this.size.x * 0.5 - 15 * 0.5, this.size.y * 0.5 - 15 * 0.5),
-            new Vector2(15, 15), "white", 6);
+            new Vector2(this.size.x * 0.5 - 15 * 0.5, this.size.y - 75 - 15 * 0.5),
+            new Vector2(12, 12), "white", 6);
         this.addEnemies();
 
         this.ball.velocity = new Vector2(0, -1);
-        this.ball.randomizeVelocityAngle();
+        this.ball.randomizeVelocityAngle(90);
     }
 
     addEnemies() {
-        const curr = new Vector2(45, 20);
-        const space = new Vector2(10, 10);
-        const count = new Vector2(Math.floor((this.size.x - space.x) / (curr.x + space.x)), 4);
-        const rest = (this.size.x - space.x) % (curr.x + space.x);
-        for (let j = 0; j < count.y; j++) {
-            for (let i = 0; i < count.x; i++) {
-                const pos = new Vector2(
-                    Math.floor(space.x + (rest * 0.5) + i * (curr.x + space.x)),
-                    Math.floor(space.y + j * (curr.y + space.y))
-                );
-                const enemy = new Enemy(pos, curr, "white");
+        const count = 8;
+        const space = 90;
+        const size = new Vector2(space, space * 0.45);
+        const rest = this.size.x - size.x * count;
+        const gap = rest / (count + 1);
+        const rows = 7;
+        for (let j = 0; j < rows; j++) {
+            for (let i = 0; i < count; i++) {
+                const pos = new Vector2(gap + i * (size.x + gap), gap + j * (size.y + gap));
+                const enemy = new Enemy(pos, size, "white");
                 this.enemies.push(enemy);
             }
         }
@@ -59,16 +58,15 @@ class PongGame extends Game {
     checkCollisionsEntities() {
         let hit = this.checkCollisionWith(this.board);
         if (hit) {
+            this.playSound("hitBoard");
         }
         for (let i = this.enemies.length - 1; i >= 0; i--) {
             const hit2 = this.checkCollisionWith(this.enemies[i], i);
-            if (hit2) {
-            }
             hit = hit || hit2;
-        }
-        if (hit) {
-            this.ball.randomizeVelocityAngle();
-            this.playSFX("pongblipf4_2.wav");
+            if (hit2) {
+                this.playSound("hitBrick");
+                this.ball.randomizeVelocityAngle(45);
+            }
         }
     }
 
@@ -96,6 +94,7 @@ class PongGame extends Game {
             }
 
             if (entity.hit() && index != null) {
+                entity.destroy();
                 this.enemies.splice(index, 1);
             }
             return true;
@@ -125,12 +124,12 @@ class PongGame extends Game {
             this.ball.velocity.x = 0;
             this.ball.velocity.y = 0
             this.gameState = "defeat";
-            this.playSFX("18787.mp3");
+            this.playSound("gameOver");
             return;
         }
 
         if (hitWall) {
-            this.playSFX("pongblipf5_2.wav");
+            this.playSound("hitWall");
         }
     }
 
@@ -140,19 +139,32 @@ class PongGame extends Game {
             switch (key) {
                 case "ArrowLeft":
                 case "a":
-                    if (this.keyInputs[key] && !this.gameOver) {
+                    if (this.keyInputs[key] && this.gameState == "running") {
                         this.board.velocity.x = -1;
                     }
                     break;
                 case "ArrowRight":
                 case "d":
-                    if (this.keyInputs[key] && !this.gameOver) {
+                    if (this.keyInputs[key] && this.gameState == "running") {
                         this.board.velocity.x = 1;
                     }
                     break;
-                default:
-                    break;
             }
         });
+    }
+
+    playSound(key) {
+        switch (key) {
+            case "hitWall":
+                this.playSFX("pongblipf4_2.wav");
+                break;
+            case "hitBrick":
+            case "hitBoard":
+                this.playSFX("pongblipf5_2.wav");
+                break;
+            case "gameOver":
+                this.playSFX("18787.mp3");
+                break;
+        }
     }
 }

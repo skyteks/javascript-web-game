@@ -6,9 +6,8 @@ class Ball extends GameObject {
         this.velocity = new Vector2();
     }
 
-    randomizeVelocityAngle() {
+    randomizeVelocityAngle(cone) {
         let angle = Math.atan2(this.velocity.y, this.velocity.x) * rad2deg;
-        const cone = 45;
         const random = Math.random() * cone - cone * 0.5;
         angle -= random;
         this.velocity.x = Math.cos(angle * deg2rad);
