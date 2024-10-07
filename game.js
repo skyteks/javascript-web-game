@@ -92,6 +92,7 @@ class Game {
                         this.gameState = "running";
                         this.showMenu();
                     }
+                    break;
                 case "End":
                     if (this.keyInputs[key] && this.gameState != "running") {
                         this.keyInputs[key] = false;
