@@ -3,12 +3,14 @@ class PongGame extends Game {
         super(size, ["ArrowLeft", "ArrowRight", "a", "d"], level, endCallback);
         this.enemies = [];
 
+        const boardSize = new Vector2(100, 20);
         this.board = new Board(
-            new Vector2(this.size.x * 0.5 - 100 * 0.5, this.size.y - 60),
-            new Vector2(100, 20), "white", 7);
+            new Vector2(this.size.x * 0.5 - boardSize.x * 0.5, this.size.y - 60),
+            boardSize, "white", 7);
+        let ballSize = new Vector2(12, 12);
         this.ball = new Ball(
-            new Vector2(this.size.x * 0.5 - 15 * 0.5, this.size.y - 75 - 15 * 0.5),
-            new Vector2(12, 12), "cyan", 8);
+            new Vector2(this.size.x * 0.5 - ballSize.x * 0.5, this.size.y - 75 - ballSize.y * 0.5),
+            ballSize, "cyan", 8);
         this.addEnemies();
 
         this.ball.velocity = new Vector2(0, -1);

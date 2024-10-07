@@ -5,8 +5,8 @@ const gameScreenSize = new Vector2(800, 600);
 window.addEventListener("load", () => onPageLoaded());
 
 function onPageLoaded() {
-    console.log("page loaded");
-    startGame(1);
+    //console.log("page loaded");
+    startGame(3);
 }
 
 function startGame(level) {
@@ -17,8 +17,15 @@ function startGame(level) {
         case 1:
             game = new FlappyGame(gameScreenSize, level, () => startGame(++level));
             break;
+        case 3:
+            game = new AsteroidsGame(gameScreenSize, level, () => startGame(++level));
+            break;
         default:
-            throw new Error(`Level ${level} not yet implemented`);
+            //throw new Error(`Level ${level} not yet implemented`);
+            console.log(`Level ${level} not yet implemented`);
+            level = 1;
+            startGame();
+            return;
     }
 }
 
