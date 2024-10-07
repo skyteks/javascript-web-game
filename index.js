@@ -6,7 +6,7 @@ window.addEventListener("load", () => onPageLoaded());
 
 function onPageLoaded() {
     //console.log("page loaded");
-    startGame(3);
+    startGame(1);
 }
 
 function startGame(level) {
@@ -21,11 +21,7 @@ function startGame(level) {
             game = new AsteroidsGame(gameScreenSize, level, () => startGame(++level));
             break;
         default:
-            //throw new Error(`Level ${level} not yet implemented`);
-            console.log(`Level ${level} not yet implemented`);
-            level = 1;
-            startGame();
-            return;
+            throw new Error(`Level ${level} not yet implemented`);
     }
 }
 
@@ -34,7 +30,3 @@ function clamp(number, min, max) {
 }
 const deg2rad = (Math.PI / 180);
 const rad2deg = (180 / Math.PI);
-
-function deepCopy(obj) {
-    return JSON.parse(JSON.stringify(obj));
-}

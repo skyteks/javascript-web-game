@@ -1,7 +1,6 @@
 class Pillar extends GameObject {
     constructor(position, size, color) {
         super(position, size, 0, color);
-        this.velocity = new Vector2();
     }
 
     move(speed) {

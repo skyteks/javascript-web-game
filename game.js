@@ -59,7 +59,6 @@ class Game {
         switch (this.gameState) {
             case "victory":
                 this.winMenu.toggleVisibility(true);
-                this.stop();
                 break;
             case "defeat":
                 this.defeatMenu.toggleVisibility(true);
@@ -74,7 +73,7 @@ class Game {
 
     stop() {
         clearInterval(this.gameIntervalId);
-        setTimeout(this.endCallback, 3000);
+        setTimeout(this.endCallback, 1000);
     }
 
     readInputs() {
@@ -98,6 +97,7 @@ class Game {
                         this.keyInputs[key] = false;
                         this.gameState = "victory";
                         this.showMenu();
+                        this.stop();
                     }
                     break;
                 default:

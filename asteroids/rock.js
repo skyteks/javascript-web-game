@@ -7,21 +7,24 @@ class Rock extends GameObject {
         this.element.style.borderTopRightRadius = rnd2 + "%";
         this.element.style.borderBottomRightRadius = rnd1 + "%";
         this.element.style.borderBottomLeftRadius = rnd2 + "%";
-        this.velocity = new Vector2();
-        this.rotation = Math.random() * 360;
+        //this.rotation = Math.random() * 360;
         const spin = 3;
         this.rotationSpeed = Math.random() * spin * 2 - spin;
     }
 
     move(speed) {
         this.position.y += speed;
-        this.rotation += this.rotationSpeed;
-        this.rotation %= 360;
+        //this.rotation += this.rotationSpeed;
+        //this.rotation %= 360;
         this.updatePosition();
     }
 
     updatePosition() {
         super.updatePosition();
-        this.element.style.transform = "rotate(" + this.rotation + "deg)";
+        //this.element.style.transform = "rotate(" + this.rotation + "deg)";
+    }
+
+    hit() {
+        return true;
     }
 }
