@@ -106,7 +106,7 @@ class Game {
     }
 
     handleKey(e, state) {
-        console.log("key \"" + e.key + "\" " + (state ? "down" : "up"));
+        //console.log("key \"" + e.key + "\" " + (state ? "down" : "up"));
         if (this.possibleKeys.includes(e.key)) {
             e.preventDefault();
             this.keyInputs[e.key] = state;
