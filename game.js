@@ -6,7 +6,7 @@ class Game {
         this.gameState = "paused";
         this.gameLoopFrecuency = 1000 / 60;
         this.gameIntervalId = null;
-        this.possibleKeys = ["tab", "r", " ", "p", ...possibleKeys];
+        this.possibleKeys = ["tab", "r", " ", "End", ...possibleKeys];
         this.possibleKeys = this.possibleKeys.filter((v, i) => this.possibleKeys.indexOf(v) == i);
         this.keyInputs = {};
         this.mainMenu = null;
@@ -64,6 +64,11 @@ class Game {
             case "paused":
                 this.mainMenu.toggleVisibility(true);
                 return;
+            case "running":
+                this.winMenu.toggleVisibility(false);
+                this.defeatMenu.toggleVisibility(false);
+                this.mainMenu.toggleVisibility(false);
+                break;
         }
     }
 
@@ -85,7 +90,13 @@ class Game {
                     if (this.keyInputs[key] && this.gameState == "paused") {
                         this.keyInputs[key] = false;
                         this.gameState = "running";
-                        this.mainMenu.toggleVisibility(false);
+                        this.showMenu();
+                    }
+                case "End":
+                    if (this.keyInputs[key] && this.gameState != "running") {
+                        this.keyInputs[key] = false;
+                        this.gameState = "victory";
+                        this.showMenu();
                     }
                     break;
                 default:
@@ -95,7 +106,7 @@ class Game {
     }
 
     handleKey(e, state) {
-        //console.log("key " + e.key + " " + (state ? "down" : "up"));
+        console.log("key \"" + e.key + "\" " + (state ? "down" : "up"));
         if (this.possibleKeys.includes(e.key)) {
             e.preventDefault();
             this.keyInputs[e.key] = state;

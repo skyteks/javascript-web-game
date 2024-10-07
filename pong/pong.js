@@ -44,10 +44,14 @@ class PongGame extends Game {
     }
 
     stop() {
-        this.board.destroy();
-        this.board = null;
-        this.ball.destroy();
-        this.ball = null;
+        if (this.board) {
+            this.board.destroy();
+            this.board = null;
+        }
+        if (this.ball) {
+            this.ball.destroy();
+            this.ball = null;
+        }
         this.enemies.forEach((enemy) => {
             enemy.destroy();
         });

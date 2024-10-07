@@ -47,7 +47,9 @@ class FlappyGame extends Game {
     }
 
     stop() {
-        this.bird.destroy();
+        if (this.bird) {
+            this.bird.destroy();
+        }
         this.bird = null;
         this.pillars.forEach((pillar) => {
             pillar.destroy();
