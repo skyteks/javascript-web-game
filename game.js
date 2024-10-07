@@ -53,6 +53,9 @@ class Game {
     }
 
     showMenu() {
+        this.winMenu.toggleVisibility(false);
+        this.defeatMenu.toggleVisibility(false);
+        this.mainMenu.toggleVisibility(false);
         switch (this.gameState) {
             case "victory":
                 this.winMenu.toggleVisibility(true);
@@ -64,10 +67,7 @@ class Game {
             case "paused":
                 this.mainMenu.toggleVisibility(true);
                 return;
-            case "running":
-                this.winMenu.toggleVisibility(false);
-                this.defeatMenu.toggleVisibility(false);
-                this.mainMenu.toggleVisibility(false);
+            default:
                 break;
         }
     }
